@@ -1,23 +1,31 @@
 variable "rabbitmq_user" {
-    type = string
+  type = string
 }
 
 variable "rabbitmq_pass" {
-    type = string
+  type = string
 }
 
 variable "rabbitmq_host" {
-    type = string
+  type = string
 }
 
 variable "openai_api_key" {
-    type = string
+  type = string
 }
 
 variable "snapshot_id" {
-    type = string
+  type = string
 }
 
 variable "docker_image" {
-    type = string
+  type = string
+}
+
+variable "nodes" {
+  type = list(object(
+    {
+      region = string
+    }
+  ))
 }
