@@ -1,0 +1,11 @@
+*
+!main.go
+!builder/
+!integration_test/
+!parser/
+!plugins/
+!protocols/
+!tracer/
+!go.mod
+!go.sum
+!Makefile

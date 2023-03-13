@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "beelzebub.fullname" . }}
+  labels:
+    {{- include "beelzebub.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 2222
+      protocol: TCP
+      name: sshd
+  selector:
+    {{- include "beelzebub.selectorLabels" . | nindent 4 }}

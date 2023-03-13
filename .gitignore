@@ -3,3 +3,10 @@
 logs
 .vscode
 .history
+terraform.tfstate
+terraform.tfstate.backup
+Chart.lock
+**/charts/
+**/.terraform/
+.terraform.lock.hcl
+terraform.auto.tfvars

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-cm
+data:
+  beelzebub.yaml: |
+    core:
+      logging:
+        debug: true
+        debugReportCaller: false
+        logDisableTimestamp: true
+        logsPath: ./logs
+      tracing:
+        rabbitMQEnabled: true
+        rabbitMQURI: "amqp://{{ .Values.rabbitmq.auth.username}}:{{ .Values.rabbitmq.auth.password }}@honey-rabbitmq"
+  ssh-2222.yaml: |
+    apiVersion: "v1"
+    protocol: "ssh"
+    address: ":2222"
+    description: "SSH interactive ChatGPT"
+    commands:
+      - regex: "^(.+)$"
+        plugin: "OpenAIGPTLinuxTerminal"
+    serverVersion: "OpenSSH"
+    serverName: "icd-prod-active"
+    passwordRegex: "^(root|admin|password|guest|123)$"
+    deadlineTimeoutSeconds: 60
+    plugin:
+      openAPIChatGPTSecretKey: "{{ .Values.openapiApiKey }}"
