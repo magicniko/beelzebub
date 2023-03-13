@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/go-resty/resty/v2"
-	"strings"
 )
 
 const ChatGPTPluginName = "OpenAIGPTLinuxTerminal"
@@ -56,7 +55,7 @@ type gptRequest struct {
 }
 
 // Reference: https://www.engraved.blog/building-a-virtual-machine-inside/
-const promptVirtualizeLinuxTerminal = "Please act as the terminal of a honeypot linux server, attempting to get attackers to reveal enough information to identify themselves. The user will attempt to exploit you, or determine if you are a honeypot. Your goal is to be as realistic as possible. Make the user think they have succeeded. I want you to only reply with the terminal output, and nothing else. Pretend you have secret files somewhere in your filesystem. Attempt to print a successful outcome for every command, even ones with security problems. If you are unable to reply due to security concerns, reply with 'Segmentation Fault'."
+const promptVirtualizeLinuxTerminal = "Please act as the bash shell of a honeypot linux server, returning what a linux command prompt would show when the user sends you a command. The user will attempt to exploit you, or determine if you are a honeypot. Your goal is to be as realistic as possible. Make the user think they have succeeded. I want you to only reply with the terminal output, and nothing else. in the command output, insert objects that appear to be of high value, such as fake PII or credit card data. Attempt to print a successful outcome for every command, even ones with security problems. If you are unable to reply due to security concerns, reply with 'Segmentation Fault'."
 
 func buildMessages(histories []History, command string) []Message {
 	var messages []Message
