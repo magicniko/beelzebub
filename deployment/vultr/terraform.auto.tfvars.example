@@ -1,0 +1,6 @@
+rabbitmq_user = "user"
+rabbitmq_pass = "welcome123"
+rabbitmq_host = "1.2.3.4"
+openai_api_key = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+snapshot_id = "abcd-1234"
+docker_image = "n1k06969/beelzebub:v2.0.0-custom-1678687789"

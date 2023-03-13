@@ -17,3 +17,7 @@ variable "openai_api_key" {
 variable "snapshot_id" {
     type = string
 }
+
+variable "docker_image" {
+    type = string
+}

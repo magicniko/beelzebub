@@ -58,5 +58,5 @@ retry 30 docker run \
   --publish 22:2222 \
   --publish 80:8080 \
   --volume /configurations:/configurations \
-    n1k06969/beelzebub:v2.0.0-custom-1678684388
+    ${DOCKER_IMAGE}
     # m4r10/beelzebub:v2.0.0

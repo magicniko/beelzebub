@@ -10,3 +10,4 @@ Chart.lock
 **/.terraform/
 .terraform.lock.hcl
 terraform.auto.tfvars
+.env

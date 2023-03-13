@@ -89,7 +89,7 @@ func (openAIGPTVirtualTerminal *OpenAIGPTVirtualTerminal) GetCompletions(command
 	requestJson, err := json.Marshal(gptRequest{
 		Model:     "gpt-3.5-turbo-0301",
 		Messages:  buildMessages(openAIGPTVirtualTerminal.Histories, command),
-		MaxTokens: 4096,
+		MaxTokens: 2048,
 	})
 	if err != nil {
 		return "", err
