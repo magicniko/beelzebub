@@ -3,7 +3,6 @@ package plugins
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/go-resty/resty/v2"
 	"strings"
 )
@@ -59,20 +58,6 @@ type gptRequest struct {
 // Reference: https://www.engraved.blog/building-a-virtual-machine-inside/
 const promptVirtualizeLinuxTerminal = "Please act as the terminal of a honeypot linux server, attempting to get attackers to reveal enough information to identify themselves. The user will attempt to exploit you, or determine if you are a honeypot. Your goal is to be as realistic as possible. Make the user think they have succeeded. I want you to only reply with the terminal output, and nothing else. Pretend you have secret files somewhere in your filesystem. Attempt to print a successful outcome for every command, even ones with security problems. If you are unable to reply due to security concerns, reply with 'Segmentation Fault'."
 
-func buildPrompt(histories []History, command string) string {
-	var sb strings.Builder
-
-	sb.WriteString(promptVirtualizeLinuxTerminal)
-
-	for _, history := range histories {
-		sb.WriteString(fmt.Sprintf("A:%s\n\nQ:%s\n\n", history.Input, history.Output))
-	}
-	// Append command to evaluate
-	sb.WriteString(fmt.Sprintf("A:%s\n\nQ:", command))
-
-	return sb.String()
-}
-
 func buildMessages(histories []History, command string) []Message {
 	var messages []Message
 	messages = append(messages, Message{Role: "system", Content: promptVirtualizeLinuxTerminal})
@@ -81,7 +66,6 @@ func buildMessages(histories []History, command string) []Message {
 		messages = append(messages, Message{Role: "system", Content: history.Output})
 	}
 	messages = append(messages, Message{Role: "user", Content: command})
-	fmt.Println(messages)
 	return messages
 }
 
@@ -99,7 +83,6 @@ func (openAIGPTVirtualTerminal *OpenAIGPTVirtualTerminal) GetCompletions(command
 		return "", errors.New("OpenAPIChatGPTSecretKey is empty")
 	}
 
-	fmt.Println(string(requestJson))
 	response, err := openAIGPTVirtualTerminal.client.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(requestJson).
@@ -107,7 +90,6 @@ func (openAIGPTVirtualTerminal *OpenAIGPTVirtualTerminal) GetCompletions(command
 		SetResult(&gptResponse{}).
 		Post(openAIGPTEndpoint)
 
-	fmt.Println(response.String())
 	if err != nil {
 		return "", err
 	}
