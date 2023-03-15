@@ -7,7 +7,7 @@ services:
     container_name: beelzebub
     restart: always
     ports: # Remove me, if you use configuration network_mode: host
-      - "22:22"
+      - "22222:22"
       - "2222:2222"
       - "8080:8080"
       - "80:80"

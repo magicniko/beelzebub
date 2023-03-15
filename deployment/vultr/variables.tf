@@ -26,6 +26,7 @@ variable "nodes" {
   type = list(object(
     {
       region = string
+      name = string
     }
   ))
 }

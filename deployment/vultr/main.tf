@@ -11,13 +11,13 @@ resource "vultr_startup_script" "beelzebub" {
 }
 
 resource "vultr_instance" "beelzebub" {
-  for_each  = { for node in var.nodes : node.region => node }
+  for_each  = { for node in var.nodes : node.name => node }
   region    = try(each.value.region, "lax")
   plan      = "vc2-1c-1gb"
   app_id    = 17
   label     = "beelzebub"
   tags      = ["honeypot", each.value.region]
-  hostname  = format("%s-beelzebub", each.value.region)
+  hostname  = format("%s-beelzebub", each.value.name)
   script_id = vultr_startup_script.beelzebub.id
 }
 

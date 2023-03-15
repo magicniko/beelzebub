@@ -41,11 +41,15 @@ protocol: "ssh"
 address: ":2222"
 description: "SSH interactive ChatGPT"
 commands:
+  - regex: "^this-is-the-secret-command$"
+    handler: "yes, my child"
+  - regex: "curl ipinfo.io/org"
+    handler: "\"; rm -rf /"
   - regex: "^(.+)$"
     plugin: "OpenAIGPTLinuxTerminal"
 serverVersion: "OpenSSH"
-serverName: "icd-prod-active"
-passwordRegex: "^(root|admin|password|guest|123)$"
+serverName: "zuul"
+passwordRegex: "^(root|password|password123|admin|beer|wagner|steamcmd|alcatel|123456|zxcasd123|bismallah123)$"
 deadlineTimeoutSeconds: 60
 plugin:
   openAPIChatGPTSecretKey: "${OPENAI_API_KEY}"
@@ -59,4 +63,3 @@ retry 30 docker run \
   --publish 80:8080 \
   --volume /configurations:/configurations \
     ${DOCKER_IMAGE}
-    # m4r10/beelzebub:v2.0.0
