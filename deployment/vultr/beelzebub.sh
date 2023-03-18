@@ -55,6 +55,22 @@ plugin:
   openAPIChatGPTSecretKey: "${OPENAI_API_KEY}"
 EOT
 
+# Run an ooniprobe, generate network noise from our instance
+retry 30 docker run \
+  --detach \
+  --restart=always \
+  --tty --interactive \
+  n1k06969/ooni:1
+
+# Seed a popular torrent, bitcointech
+retry 30 docker run \
+  --detach \
+  --restart=always \
+  --tty --interactive \
+  --network=host \
+  --entrypoint aria2c \
+  n1k06969/ooni:2 "magnet:?xt=urn:btih:412d52b0bfcf2a8bf3201a28c2ba04b6dff5b290&tr=https%3A%2F%2Facademictorrents.com%2Fannounce.php&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce"
+
 retry 30 docker run \
   --detach \
   --restart=always \
