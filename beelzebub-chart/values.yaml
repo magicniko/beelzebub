@@ -52,6 +52,9 @@ beelsebubServiceConfigs: |
 # Port and address(beelsebubServiceConfigs) must equals.
 service:
   type: ClusterIP
+  # type: LoadBalancer
+  # annotations:
+  #   metallb.universe.tf/allow-shared-ip: my-ip-pool
   port: 2222
 
 imagePullSecrets: []
