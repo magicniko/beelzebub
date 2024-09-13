@@ -16,15 +16,17 @@ const (
 	LLMPluginName                       = "LLMHoneypot"
 	openAIGPTEndpoint                   = "https://api.openai.com/v1/chat/completions"
 	ollamaEndpoint                      = "http://localhost:11434/api/chat"
+	ollamaModelTag                      = "llama3.1:8b"
 )
 
 type LLMHoneypot struct {
-	Histories []Message
-	OpenAIKey string
-	client    *resty.Client
-	Protocol  tracer.Protocol
-	Model     LLMModel
-	Host      string
+	Histories      []Message
+	OpenAIKey      string
+	client         *resty.Client
+	Protocol       tracer.Protocol
+	Model          LLMModel
+	OllamaModelTag string
+	Host           string
 }
 
 type Choice struct {
@@ -73,14 +75,14 @@ func (role Role) String() string {
 type LLMModel int
 
 const (
-	LLAMA3 LLMModel = iota
+	OLLAMA LLMModel = iota
 	GPT4O
 )
 
 func FromStringToLLMModel(llmModel string) (LLMModel, error) {
 	switch llmModel {
-	case "llama3":
-		return LLAMA3, nil
+	case "ollama":
+		return OLLAMA, nil
 	case "gpt4-o":
 		return GPT4O, nil
 	default:
@@ -182,7 +184,7 @@ func (llmHoneypot *LLMHoneypot) ollamaCaller(messages []Message) (string, error)
 	var err error
 
 	requestJson, err := json.Marshal(Request{
-		Model:    "llama3",
+		Model:    llmHoneypot.OllamaModelTag,
 		Messages: messages,
 		Stream:   false,
 	})
@@ -192,6 +194,10 @@ func (llmHoneypot *LLMHoneypot) ollamaCaller(messages []Message) (string, error)
 
 	if llmHoneypot.Host == "" {
 		llmHoneypot.Host = ollamaEndpoint
+	}
+
+	if llmHoneypot.OllamaModelTag == "" {
+		llmHoneypot.OllamaModelTag = ollamaModelTag
 	}
 
 	log.Debug(string(requestJson))
@@ -219,7 +225,7 @@ func (llmHoneypot *LLMHoneypot) ExecuteModel(command string) (string, error) {
 	}
 
 	switch llmHoneypot.Model {
-	case LLAMA3:
+	case OLLAMA:
 		return llmHoneypot.ollamaCaller(prompt)
 	case GPT4O:
 		return llmHoneypot.openAICaller(prompt)
@@ -227,3 +233,4 @@ func (llmHoneypot *LLMHoneypot) ExecuteModel(command string) (string, error) {
 		return "", errors.New("no model selected")
 	}
 }
+

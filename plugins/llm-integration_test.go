@@ -159,7 +159,7 @@ func TestBuildExecuteModelSSHWithResultsLLama(t *testing.T) {
 	llmHoneypot := LLMHoneypot{
 		Histories: make([]Message, 0),
 		Protocol:  tracer.SSH,
-		Model:     LLAMA3,
+		Model:     OLLAMA,
 	}
 
 	openAIGPTVirtualTerminal := InitLLMHoneypot(llmHoneypot)
@@ -287,9 +287,9 @@ func TestBuildExecuteModelHTTPWithoutResults(t *testing.T) {
 }
 
 func TestFromString(t *testing.T) {
-	model, err := FromStringToLLMModel("llama3")
+	model, err := FromStringToLLMModel("ollama")
 	assert.Nil(t, err)
-	assert.Equal(t, LLAMA3, model)
+	assert.Equal(t, OLLAMA, model)
 
 	model, err = FromStringToLLMModel("gpt4-o")
 	assert.Nil(t, err)

@@ -1,0 +1,11 @@
+apiVersion: "v1"
+protocol: "http"
+address: ":42069"
+description: "HTTP Ollama Llama llama llama llama!"
+commands:
+  - regex: "^(.+)$"
+    plugin: "LLMHoneypot"
+plugin:
+   llmModel: "ollama"
+   ollamaModelTag: "llama3.1:8b-instruct-q8_0"
+   host: "http://10.0.1.69:11434/api/chat" #default http://localhost:11434/api/chat

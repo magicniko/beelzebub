@@ -38,11 +38,16 @@ func (httpStrategy HTTPStrategy) Init(beelzebubServiceConfiguration parser.Beelz
 				if command.Plugin == plugins.LLMPluginName {
 
 					llmModel, err := plugins.FromStringToLLMModel(beelzebubServiceConfiguration.Plugin.LLMModel)
-
 					if err != nil {
 						log.Errorf("Error fromString: %s", err.Error())
 						responseHTTPBody = "404 Not Found!"
 					}
+
+					ollamaModelTag := ""
+					if llmModel == plugins.OLLAMA {
+						ollamaModelTag = beelzebubServiceConfiguration.Plugin.OllamaModelTag
+					}
+
 
 					llmHoneypot := plugins.LLMHoneypot{
 						Histories: make([]plugins.Message, 0),
@@ -50,6 +55,8 @@ func (httpStrategy HTTPStrategy) Init(beelzebubServiceConfiguration parser.Beelz
 						Protocol:  tracer.HTTP,
 						Host:      beelzebubServiceConfiguration.Plugin.Host,
 						Model:     llmModel,
+						OllamaModelTag: ollamaModelTag,
+
 					}
 
 					llmHoneypotInstance := plugins.InitLLMHoneypot(llmHoneypot)

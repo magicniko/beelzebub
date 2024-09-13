@@ -51,6 +51,7 @@ type Prometheus struct {
 type Plugin struct {
 	OpenAISecretKey string `yaml:"openAISecretKey"`
 	Host            string `yaml:"host"`
+	OllamaModelTag  string `yaml:"ollamaModelTag"`
 	LLMModel        string `yaml:"llmModel"`
 }
 
