@@ -48,6 +48,7 @@ func (httpStrategy HTTPStrategy) Init(beelzebubServiceConfiguration parser.Beelz
 						ollamaModelTag = beelzebubServiceConfiguration.Plugin.OllamaModelTag
 					}
 
+					systemPrompt := beelzebubServiceConfiguration.Plugin.SystemPrompt
 
 					llmHoneypot := plugins.LLMHoneypot{
 						Histories: make([]plugins.Message, 0),
@@ -56,7 +57,7 @@ func (httpStrategy HTTPStrategy) Init(beelzebubServiceConfiguration parser.Beelz
 						Host:      beelzebubServiceConfiguration.Plugin.Host,
 						Model:     llmModel,
 						OllamaModelTag: ollamaModelTag,
-
+						SystemPrompt: systemPrompt,
 					}
 
 					llmHoneypotInstance := plugins.InitLLMHoneypot(llmHoneypot)

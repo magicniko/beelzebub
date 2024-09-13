@@ -53,6 +53,7 @@ type Plugin struct {
 	Host            string `yaml:"host"`
 	OllamaModelTag  string `yaml:"ollamaModelTag"`
 	LLMModel        string `yaml:"llmModel"`
+	SystemPrompt    string `yaml:"systemPrompt"`
 }
 
 // BeelzebubServiceConfiguration is the struct that contains the configurations of the honeypot service

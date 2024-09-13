@@ -27,6 +27,7 @@ type LLMHoneypot struct {
 	Model          LLMModel
 	OllamaModelTag string
 	Host           string
+	SystemPrompt   string
 }
 
 type Choice struct {
@@ -97,14 +98,14 @@ func InitLLMHoneypot(config LLMHoneypot) *LLMHoneypot {
 	return &config
 }
 
-func buildPrompt(histories []Message, protocol tracer.Protocol, command string) ([]Message, error) {
+func buildPrompt(histories []Message, protocol tracer.Protocol, command string, systemPrompt string) ([]Message, error) {
 	var messages []Message
 
 	switch protocol {
 	case tracer.SSH:
 		messages = append(messages, Message{
 			Role:    SYSTEM.String(),
-			Content: systemPromptVirtualizeLinuxTerminal,
+			Content: systemPrompt,
 		})
 		messages = append(messages, Message{
 			Role:    USER.String(),
@@ -120,7 +121,7 @@ func buildPrompt(histories []Message, protocol tracer.Protocol, command string) 
 	case tracer.HTTP:
 		messages = append(messages, Message{
 			Role:    SYSTEM.String(),
-			Content: systemPromptVirtualizeHTTPServer,
+			Content: systemPrompt,
 		})
 		messages = append(messages, Message{
 			Role:    USER.String(),
@@ -200,6 +201,7 @@ func (llmHoneypot *LLMHoneypot) ollamaCaller(messages []Message) (string, error)
 		llmHoneypot.OllamaModelTag = ollamaModelTag
 	}
 
+
 	log.Debug(string(requestJson))
 	response, err := llmHoneypot.client.R().
 		SetHeader("Content-Type", "application/json").
@@ -218,7 +220,25 @@ func (llmHoneypot *LLMHoneypot) ollamaCaller(messages []Message) (string, error)
 func (llmHoneypot *LLMHoneypot) ExecuteModel(command string) (string, error) {
 	var err error
 
-	prompt, err := buildPrompt(llmHoneypot.Histories, llmHoneypot.Protocol, command)
+	var systemPrompt string
+	switch llmHoneypot.Protocol {
+	case tracer.SSH:
+		if llmHoneypot.SystemPrompt == "" {
+			systemPrompt = systemPromptVirtualizeLinuxTerminal
+		} else {
+			systemPrompt = llmHoneypot.SystemPrompt
+		}
+	case tracer.HTTP:
+		if llmHoneypot.SystemPrompt == "" {
+			systemPrompt = systemPromptVirtualizeHTTPServer
+		} else {
+			systemPrompt = llmHoneypot.SystemPrompt
+		}
+	default:
+		return "", errors.New("No system prompt selected")
+	}
+
+	prompt, err := buildPrompt(llmHoneypot.Histories, llmHoneypot.Protocol, command, systemPrompt)
 
 	if err != nil {
 		return "", err
