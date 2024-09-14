@@ -6,4 +6,4 @@ metadata:
     {{- include "beelzebub-chart.labels" . | nindent 4 }}
 data:
   service.yaml:
-    {{- toYaml .Values.beelsebubServiceConfigs | nindent 12 }}
+    {{- toYaml .Values.beelzebubServiceConfigs | nindent 12 }}

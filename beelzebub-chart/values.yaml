@@ -2,9 +2,9 @@
 replicaCount: 1
 
 image:
-  repository: m4r10/beelzebub
+  repository: n1k06969/beelzebub
   pullPolicy: IfNotPresent
-  tag: v3.0.0
+  tag: 51499fb.ollama
 
 
 beelzebubCoreConfigs: |
@@ -16,13 +16,14 @@ beelzebubCoreConfigs: |
         logsPath: ./logs
       tracings:
         rabbit-mq:
-          enabled: false
-          uri: ""
+          enabled: true
+          uri: "amqp://admin:admin@sensors-rabbitmq.rmq.svc.cluster.local:5672"
+
       prometheus:
         path: "/metrics"
         port: ":2112"
 
-beelsebubServiceConfigs: | 
+1:beelzebubServiceConfigs: |
   apiVersion: "v1"
   protocol: "ssh"
   address: ":2222"
@@ -49,13 +50,13 @@ beelsebubServiceConfigs: |
   passwordRegex: "^(root|qwerty|Smoker666|123456|jenkins|minecraft|sinus|alex|postgres|Ly123456)$"
   deadlineTimeoutSeconds: 60
 
-# Port and address(beelsebubServiceConfigs) must equals.
+# Port and address(1:beelzebubServiceConfigs) must equals.
 service:
-  type: ClusterIP
-  # type: LoadBalancer
-  # annotations:
-  #   metallb.universe.tf/allow-shared-ip: my-ip-pool
-  port: 2222
+  # type: ClusterIP
+  type: LoadBalancer
+  annotations:
+    metallb.universe.tf/allow-shared-ip: my-ip-pool
+  port: 6660
 
 imagePullSecrets: []
 nameOverride: ""
